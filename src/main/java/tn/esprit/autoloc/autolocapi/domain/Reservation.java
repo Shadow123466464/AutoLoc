@@ -28,14 +28,11 @@ public class Reservation {
     private StatutReservation statut;
 
     @ManyToOne
-    @JoinColumn(name = "id_vehicule")
-    private Vehicule vehicule;
-
-    @ManyToOne
-    @JoinColumn(name = "id_client")
     private Client client;
 
-    @OneToOne
-    @JoinColumn(name = "id_contrat")
+    @ManyToOne
+    private Vehicule vehicule;
+
+    @OneToOne(mappedBy = "reservation")
     private Contrat contrat;
 }
