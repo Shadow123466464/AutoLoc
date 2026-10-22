@@ -21,6 +21,12 @@ cela évite la boucle de sérialisation et permet la cascade de création/suppre
 Les collections inverses d'`Agence`, `Client` et `Vehicule` utilisent `@JsonIgnore` pour
 ne pas exposer tout le graphe JPA dans chaque réponse.
 
+Les contrôleurs utilisent désormais des DTO (`web.dto`) au lieu d'exposer directement
+les entités JPA. Les associations sont représentées par des identifiants (`reservationId`,
+`clientId`, `vehiculeId`, `agenceId` et `contratId`) dans les requêtes et les réponses.
+Cela évite la modification directe d'entités persistantes par les clients et limite le graphe
+JSON exposé par l'API.
+
 `@JsonBackReference` ignore le côté inverse d'une paire managed/back reference.
 `@JsonIgnore` ignore toujours la propriété concernée dans la sérialisation et la désérialisation.
 

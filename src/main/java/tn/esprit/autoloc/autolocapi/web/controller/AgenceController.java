@@ -3,8 +3,8 @@ package tn.esprit.autoloc.autolocapi.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.autoloc.autolocapi.domain.Agence;
 import tn.esprit.autoloc.autolocapi.service.IAgenceService;
+import tn.esprit.autoloc.autolocapi.web.dto.*;
 
 import java.util.List;
 
@@ -15,15 +15,29 @@ public class AgenceController {
     private final IAgenceService service;
 
     @GetMapping
-    public List<Agence> findAll() { return service.retrieveAllAgences(); }
-    @GetMapping("/{id}") public Agence findById(@PathVariable Long id) { return service.retrieveAgence(id); }
-    @PostMapping public ResponseEntity<Agence> create(@RequestBody Agence value) {
-        return ResponseEntity.status(201).body(service.addAgence(value));
+    public List<AgenceDto> findAll() {
+        return service.retrieveAllAgences().stream().map(ApiDtoMapper::toDto).toList();
     }
-    @PutMapping("/{id}") public Agence update(@PathVariable Long id, @RequestBody Agence value) {
-        value.setIdAgence(id); return service.updateAgence(value);
+
+    @GetMapping("/{id}")
+    public AgenceDto findById(@PathVariable Long id) {
+        return ApiDtoMapper.toDto(service.retrieveAgence(id));
     }
-    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.removeAgence(id); return ResponseEntity.noContent().build();
+
+    @PostMapping
+    public ResponseEntity<AgenceDto> create(@RequestBody AgenceDto value) {
+        return ResponseEntity.status(201).body(ApiDtoMapper.toDto(service.addAgence(ApiDtoMapper.toEntity(value))));
+    }
+
+    @PutMapping("/{id}")
+    public AgenceDto update(@PathVariable Long id, @RequestBody AgenceDto value) {
+        AgenceDto request = new AgenceDto(id, value.nom(), value.ville(), value.adresse(), value.telephone());
+        return ApiDtoMapper.toDto(service.updateAgence(ApiDtoMapper.toEntity(request)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.removeAgence(id);
+        return ResponseEntity.noContent().build();
     }
 }

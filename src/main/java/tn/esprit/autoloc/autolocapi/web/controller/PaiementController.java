@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.autoloc.autolocapi.domain.Paiement;
 import tn.esprit.autoloc.autolocapi.service.IPaiementService;
+import tn.esprit.autoloc.autolocapi.web.dto.*;
 
 import java.util.List;
 
@@ -15,10 +15,16 @@ import java.util.List;
 @Tag(name = "Paiements", description = "Consultation des paiements")
 public class PaiementController {
     private final IPaiementService service;
+
     @GetMapping
     @Operation(summary = "Lister les paiements")
-    public List<Paiement> findAll() { return service.retrieveAllPaiements(); }
+    public List<PaiementDto> findAll() {
+        return service.retrieveAllPaiements().stream().map(ApiDtoMapper::toDto).toList();
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Consulter un paiement")
-    public Paiement findById(@PathVariable Long id) { return service.retrievePaiement(id); }
+    public PaiementDto findById(@PathVariable Long id) {
+        return ApiDtoMapper.toDto(service.retrievePaiement(id));
+    }
 }
