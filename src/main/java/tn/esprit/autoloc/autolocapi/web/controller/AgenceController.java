@@ -9,7 +9,7 @@ import tn.esprit.autoloc.autolocapi.service.IAgenceService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/agences")
+@RequestMapping("/agences")
 @RequiredArgsConstructor
 public class AgenceController {
     private final IAgenceService service;
@@ -18,7 +18,7 @@ public class AgenceController {
     public List<Agence> findAll() { return service.retrieveAllAgences(); }
     @GetMapping("/{id}") public Agence findById(@PathVariable Long id) { return service.retrieveAgence(id); }
     @PostMapping public ResponseEntity<Agence> create(@RequestBody Agence value) {
-        return ResponseEntity.ok(service.addAgence(value));
+        return ResponseEntity.status(201).body(service.addAgence(value));
     }
     @PutMapping("/{id}") public Agence update(@PathVariable Long id, @RequestBody Agence value) {
         value.setIdAgence(id); return service.updateAgence(value);

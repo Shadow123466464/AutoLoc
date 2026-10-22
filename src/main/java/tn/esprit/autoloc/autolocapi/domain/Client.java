@@ -1,6 +1,7 @@
 package tn.esprit.autoloc.autolocapi.domain;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,5 +35,6 @@ public class Client {
     private LocalDate dateInscription;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private Set<Reservation> reservations;
 }

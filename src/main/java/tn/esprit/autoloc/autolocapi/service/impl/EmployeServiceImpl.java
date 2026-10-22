@@ -3,6 +3,7 @@ package tn.esprit.autoloc.autolocapi.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.autolocapi.domain.Employe;
+import tn.esprit.autoloc.autolocapi.domain.RoleEmploye;
 import tn.esprit.autoloc.autolocapi.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.autolocapi.repository.IEmployeRepository;
 import tn.esprit.autoloc.autolocapi.service.IEmployeService;
@@ -19,6 +20,7 @@ public class EmployeServiceImpl implements IEmployeService {
     public Employe addEmploye(Employe employe) {
         requireValid(employe);
         employe.setIdEmploye(null);
+        employe.setRole(RoleEmploye.AGENT);
         return employeRepository.save(employe);
     }
 

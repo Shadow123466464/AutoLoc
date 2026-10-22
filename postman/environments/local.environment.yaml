@@ -1,0 +1,14 @@
+name: local
+values:
+  - key: baseUrl
+    value: 'http://localhost:8080/api'
+  - key: userUsername
+    value: user
+  - key: userPassword
+    secret: true
+  - key: managerUsername
+    value: manager
+  - key: managerPassword
+    secret: true
+  - key: csrfToken
+    value: empty

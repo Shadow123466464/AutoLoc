@@ -1,0 +1,28 @@
+$kind: http-request
+name: "{{baseUrl}}/contrats"
+description: ""
+url: "{{baseUrl}}/contrats"
+method: POST
+headers:
+  X-XSRF-TOKEN: "{{csrfToken}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"dateSignature\": \"2026-11-02\",\r
+
+    \  \"montantTotal\": 480.00,\r
+
+    \  \"valide\": true\r
+
+    }"
+auth:
+  type: basic
+  credentials:
+    username: "{{managerUsername}}"
+    password: "{{managerPassword}}"
+scripts:
+  - type: afterResponse
+    code: ""
+    language: text/javascript
+order: 1792668511461

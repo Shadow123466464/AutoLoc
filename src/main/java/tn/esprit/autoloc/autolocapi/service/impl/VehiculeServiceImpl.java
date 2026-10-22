@@ -1,9 +1,9 @@
 package tn.esprit.autoloc.autolocapi.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.autolocapi.domain.Vehicule;
+import tn.esprit.autoloc.autolocapi.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.autolocapi.repository.IVehiculeRepository;
 import tn.esprit.autoloc.autolocapi.service.IVehiculeService;
 
@@ -27,7 +27,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
             throw new IllegalArgumentException("idVehicule must not be null for update");
         }
         if (!vehiculeRepository.existsById(vehicule.getIdVehicule())) {
-            throw new EntityNotFoundException("Vehicule not found id=" + vehicule.getIdVehicule());
+            throw new ResourceNotFoundException("Vehicule", vehicule.getIdVehicule());
         }
         return vehiculeRepository.save(vehicule);
     }
@@ -35,7 +35,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
     @Override
     public Vehicule retrieveVehicule(Long idVehicule) {
         return vehiculeRepository.findById(idVehicule)
-                .orElseThrow(() -> new EntityNotFoundException("Vehicule not found id=" + idVehicule));
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicule", idVehicule));
     }
 
     @Override
@@ -45,6 +45,7 @@ public class VehiculeServiceImpl implements IVehiculeService {
 
     @Override
     public void removeVehicule(Long idVehicule) {
+        retrieveVehicule(idVehicule);
         vehiculeRepository.deleteById(idVehicule);
     }
 }

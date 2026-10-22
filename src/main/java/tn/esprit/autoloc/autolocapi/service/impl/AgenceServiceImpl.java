@@ -1,9 +1,9 @@
 package tn.esprit.autoloc.autolocapi.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.autolocapi.domain.Agence;
+import tn.esprit.autoloc.autolocapi.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.autolocapi.repository.IAgenceRepository;
 import tn.esprit.autoloc.autolocapi.service.IAgenceService;
 
@@ -27,7 +27,7 @@ public class AgenceServiceImpl implements IAgenceService {
             throw new IllegalArgumentException("idAgence must not be null for update");
         }
         if (!agenceRepository.existsById(agence.getIdAgence())) {
-            throw new EntityNotFoundException("Agence not found id=" + agence.getIdAgence());
+            throw new ResourceNotFoundException("Agence", agence.getIdAgence());
         }
         return agenceRepository.save(agence);
     }
@@ -35,7 +35,7 @@ public class AgenceServiceImpl implements IAgenceService {
     @Override
     public Agence retrieveAgence(Long idAgence) {
         return agenceRepository.findById(idAgence)
-                .orElseThrow(() -> new EntityNotFoundException("Agence not found id=" + idAgence));
+                .orElseThrow(() -> new ResourceNotFoundException("Agence", idAgence));
     }
 
     @Override
@@ -45,6 +45,7 @@ public class AgenceServiceImpl implements IAgenceService {
 
     @Override
     public void removeAgence(Long idAgence) {
+        retrieveAgence(idAgence);
         agenceRepository.deleteById(idAgence);
     }
 }
